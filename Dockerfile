@@ -22,7 +22,7 @@ ENV OPENAPI_PATH="/doc" \
     DB_HOST="db" \
     DB_PORT=5432 \
     DB_NAME="bingemate" \
-    DB_GNERATION="update"
+    DB_GENERATION="update"
 
 COPY --from=builder --chown=1000 /app/build/quarkus-app/lib/ /deployments/lib/
 COPY --from=builder --chown=1000 /app/build/quarkus-app/*.jar /deployments/
