@@ -1,5 +1,11 @@
-*
-!build/*-runner
-!build/*-runner.jar
-!build/lib/*
-!build/quarkus-app/*
+.git
+.gradle/
+gradle
+.idea/
+build/
+data/
+.gitignore
+docker-compose.yml
+gradlew*
+Makefile
+README.md

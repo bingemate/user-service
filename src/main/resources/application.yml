@@ -3,7 +3,8 @@
     package:
       type: fast-jar
     smallrye-openapi:
-      path: /openapi
+      path: /document
+      store-schema-directory: docs/schema
     datasource:
       db-kind: postgresql
       username: postgres
@@ -13,12 +14,11 @@
     hibernate-orm:
       database:
         generation: update
+
 "%env":
   quarkus:
     package:
       type: fast-jar
-    smallrye-openapi:
-      path: ${OPENAPI_PATH}
     datasource:
       db-kind: ${DB_KIND}
       username: ${DB_USERNAME}

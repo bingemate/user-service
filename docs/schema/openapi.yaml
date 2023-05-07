@@ -1,0 +1,337 @@
+---
+openapi: 3.0.3
+info:
+  title: user-service API
+  version: 1.0-SNAPSHOT
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value
+tags:
+- name: Friends
+- name: User Preferences
+paths:
+  /friends:
+    get:
+      tags:
+      - Friends
+      summary: Get friends
+      description: Get a list of friends of the user
+      parameters:
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      responses:
+        "200":
+          description: Returns a list of friends
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FriendDto'
+    put:
+      tags:
+      - Friends
+      summary: Update friend request
+      description: Update a friend request
+      parameters:
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFriendRequest'
+      responses:
+        "200":
+          description: Friend request updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateFriendRequest'
+        "400":
+          description: Bad request
+    post:
+      tags:
+      - Friends
+      summary: Create friend request
+      description: Create a friend request
+      parameters:
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddFriendRequest'
+      responses:
+        "201":
+          description: Friend request created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendDto'
+        "400":
+          description: Bad request
+  /friends/{friendId}:
+    delete:
+      tags:
+      - Friends
+      summary: Delete friend
+      description: Delete a friend
+      parameters:
+      - name: friendId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      responses:
+        "200":
+          description: Friend deleted
+        "400":
+          description: Bad request
+  /user-preferences:
+    get:
+      tags:
+      - User Preferences
+      summary: Get user preferences
+      description: "Get the user preferences of the user, creates a new one if it\
+        \ doesn't exist"
+      parameters:
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      responses:
+        "200":
+          description: Returns the user preferences
+          content:
+            application/json:
+              schema:
+                description: The preferences of a user
+                required:
+                - statsVisibility
+                - readingHistoryVisibility
+                type: object
+                properties:
+                  statsVisibility:
+                    $ref: '#/components/schemas/VisibilityPreferences'
+                  readingHistoryVisibility:
+                    $ref: '#/components/schemas/VisibilityPreferences'
+    put:
+      tags:
+      - User Preferences
+      summary: Update user preferences
+      description: Update the user preferences of the user
+      parameters:
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserPreferences'
+      responses:
+        "200":
+          description: Returns the user preferences
+          content:
+            application/json:
+              schema:
+                description: The preferences of a user
+                required:
+                - statsVisibility
+                - readingHistoryVisibility
+                type: object
+                properties:
+                  statsVisibility:
+                    $ref: '#/components/schemas/VisibilityPreferences'
+                  readingHistoryVisibility:
+                    $ref: '#/components/schemas/VisibilityPreferences'
+    post:
+      tags:
+      - User Preferences
+      summary: Create user preferences
+      description: Create the user preferences of the user
+      parameters:
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserPreferencesDto'
+      responses:
+        "201":
+          description: Returns the user preferences
+          content:
+            application/json:
+              schema:
+                description: The preferences of a user
+                required:
+                - statsVisibility
+                - readingHistoryVisibility
+                type: object
+                properties:
+                  statsVisibility:
+                    $ref: '#/components/schemas/VisibilityPreferences'
+                  readingHistoryVisibility:
+                    $ref: '#/components/schemas/VisibilityPreferences'
+    delete:
+      tags:
+      - User Preferences
+      summary: Delete user preferences
+      description: Delete the user preferences of the user
+      parameters:
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      responses:
+        "200":
+          description: User preferences deleted
+  /user-preferences/{targetUserId}:
+    get:
+      tags:
+      - User Preferences
+      summary: Get authorized user preferences
+      description: Get the user preferences of the user if the user is authorized
+      parameters:
+      - name: targetUserId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - name: User-id
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      responses:
+        "200":
+          description: Returns the user preferences
+          content:
+            application/json:
+              schema:
+                description: Access rights of a user
+                type: object
+                properties:
+                  statsVisibility:
+                    type: boolean
+                  readingHistoryVisibility:
+                    type: boolean
+components:
+  schemas:
+    AddFriendRequest:
+      description: Request to add a friend
+      required:
+      - friendId
+      type: object
+      properties:
+        friendId:
+          $ref: '#/components/schemas/UUID'
+    CreateUserPreferencesDto:
+      description: The preferences of a user
+      required:
+      - statsVisibility
+      - readingHistoryVisibility
+      type: object
+      properties:
+        statsVisibility:
+          $ref: '#/components/schemas/VisibilityPreferences'
+        readingHistoryVisibility:
+          $ref: '#/components/schemas/VisibilityPreferences'
+    FriendDto:
+      description: A friend of a user
+      required:
+      - state
+      - friendId
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/FriendState'
+        friendId:
+          $ref: '#/components/schemas/UUID'
+    FriendState:
+      enum:
+      - REQUESTED
+      - ACCEPTED
+      - REJECTED
+      - BLOCKED
+      type: string
+    UUID:
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+      type: string
+    UpdateFriendRequest:
+      description: Request to update a friend
+      required:
+      - friendId
+      - state
+      type: object
+      properties:
+        friendId:
+          $ref: '#/components/schemas/UUID'
+        state:
+          $ref: '#/components/schemas/FriendState'
+    UpdateUserPreferences:
+      description: The preferences of a user
+      type: object
+      properties:
+        statsVisibility:
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/VisibilityPreferences'
+          nullable: true
+        readingHistoryVisibility:
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/VisibilityPreferences'
+          nullable: true
+    UserPreferencesDto:
+      description: The preferences of a user
+      required:
+      - statsVisibility
+      - readingHistoryVisibility
+      type: object
+      properties:
+        statsVisibility:
+          $ref: '#/components/schemas/VisibilityPreferences'
+        readingHistoryVisibility:
+          $ref: '#/components/schemas/VisibilityPreferences'
+    VisibilityPreferences:
+      enum:
+      - PUBLIC
+      - FRIENDS
+      - PRIVATE
+      type: string
+    WhatUserCanSeeDto:
+      description: Access rights of a user
+      type: object
+      properties:
+        statsVisibility:
+          type: boolean
+        readingHistoryVisibility:
+          type: boolean

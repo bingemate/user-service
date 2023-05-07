@@ -1,18 +1,22 @@
-.PHONY: dev docker-dev build docker-down
+.PHONY: dev up build down doc
 
 dev:
 	@echo "Starting development server..."
-	@./gradlew quarkusDev --profile local
+	@./gradlew quarkusDev -Dquarkus.profile=local
 
-docker-dev:
+up:
 	@echo "Starting development container..."
-	@docker-compose up -d -f ../dev-manager/docker-compose.yml
+	@docker-compose up -d
 
 build:
 	@echo "Building application..."
-	@./gradlew build
+	@docker build -f ./Dockerfile -t user-service .
 
-docker-down:
+down:
 	@echo "Stopping development container..."
-	@docker-compose down -f ../dev-manager/docker-compose.yml
+	@docker-compose down
+
+doc:
+	@echo "Generating documentation..."
+	@./gradlew build -Dquarkus.profile=local
 
