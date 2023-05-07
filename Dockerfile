@@ -1,4 +1,4 @@
-FROM gradle:jdk17 as builder
+FROM gradle:jdk17 AS builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY gradle.properties ./gradle.properties
 RUN gradle build -x test -Dquarkus.profile=env
 
 
-FROM registry.access.redhat.com/ubi8/openjdk-17:1.14 as runner
+FROM registry.access.redhat.com/ubi8/openjdk-17:1.14 AS runner
 
 ENV LANGUAGE='en_US:en'
 
@@ -21,7 +21,8 @@ ENV OPENAPI_PATH="/doc" \
     DB_PASSWORD="postgres" \
     DB_HOST="db" \
     DB_PORT=5432 \
-    DB_NAME="bingemate"
+    DB_NAME="bingemate" \
+    DB_GNERATION="update"
 
 COPY --from=builder --chown=1000 /app/build/quarkus-app/lib/ /deployments/lib/
 COPY --from=builder --chown=1000 /app/build/quarkus-app/*.jar /deployments/

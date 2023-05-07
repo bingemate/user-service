@@ -27,4 +27,4 @@
         url: jdbc:${DB_KIND}://${DB_HOST}:${DB_PORT}/${DB_NAME}
     hibernate-orm:
       database:
-        generation: update
+        generation: ${DB_GENERATION}
