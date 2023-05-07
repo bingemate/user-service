@@ -34,4 +34,4 @@ jobs:
             push: true
             build-args: |
               environment=${{ github.ref == 'refs/heads/dev' && 'dev' || 'prod' }}
-            tags: rg.fr-par.scw.cloud/binge-mate/media-service:${{ github.ref == 'refs/heads/dev' && 'dev' || 'prod' }}
+            tags: rg.fr-par.scw.cloud/binge-mate/user-service:${{ github.ref == 'refs/heads/dev' && 'dev' || 'prod' }}
