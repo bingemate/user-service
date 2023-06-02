@@ -60,6 +60,62 @@ class FriendsResource {
     }
 
     @GET
+    @Path("/user/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get friends", description = "Get a list of friends of the user")
+    @APIResponses(
+        value = [
+            APIResponse(
+                responseCode = "200",
+                description = "Returns a list of friends",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(
+                            type = SchemaType.ARRAY,
+                            implementation = FriendDto::class
+                        ),
+                    )
+                ]
+            )
+        ],
+    )
+    fun getUserFriends(
+        @PathParam("userId") userId: UUID,
+    ): Response {
+        val friends = friendsService.getFriends(userId)
+        return Response.ok(friends).build()
+    }
+
+    @GET
+    @Path("/relations")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get relations", description = "Get a list of relations of the user")
+    @APIResponses(
+        value = [
+            APIResponse(
+                responseCode = "200",
+                description = "Returns a list of relations",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(
+                            type = SchemaType.ARRAY,
+                            implementation = FriendDto::class
+                        ),
+                    )
+                ]
+            )
+        ],
+    )
+    fun getRelations(
+        @HeaderParam("User-id") userId: UUID,
+    ): Response {
+        val friends = friendsService.getRelations(userId)
+        return Response.ok(friends).build()
+    }
+
+    @GET
     @Path("/{friendId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get friend", description = "Get a friend of the user")

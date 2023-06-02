@@ -20,6 +20,11 @@ class FriendsService {
         return friends.map { friend -> friend.toDto(userId) }
     }
 
+    fun getRelations(userId: UUID): List<FriendDto> {
+        val friends: List<Friend> = friendsRepository.getRelations(userId)
+        return friends.map { friend -> friend.toDto(userId) }
+    }
+
     fun createFriendRequest(userId: UUID, addFriendRequest: AddFriendRequest): FriendDto {
         /// TODO : Check if friend existe
         val friendExist = friendsRepository.getRelationship(userId, addFriendRequest.friendId)

@@ -16,6 +16,13 @@ class FriendsRepository : PanacheRepository<Friend> {
             params
         ).list()
     }
+    fun getRelations(userId: UUID): List<Friend> {
+        val params = mapOf("userId" to userId)
+        return find(
+            "userRequester = :userId or userRequested = :userId",
+            params
+        ).list()
+    }
 
     fun getRelationship(userId: UUID, friendId: UUID): Friend? {
         val params = mapOf("userId" to userId, "friendId" to friendId)
