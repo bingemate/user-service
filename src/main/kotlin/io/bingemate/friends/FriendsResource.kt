@@ -59,6 +59,38 @@ class FriendsResource {
         return Response.ok(friends).build()
     }
 
+    @GET
+    @Path("/{friendId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get friend", description = "Get a friend of the user")
+    @APIResponses(
+        value = [
+            APIResponse(
+                responseCode = "200",
+                description = "Returns a friend",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(
+                            implementation = FriendDto::class
+                        ),
+                    )
+                ]
+            ),
+            APIResponse(
+                responseCode = "404",
+                description = "Friend not found"
+            )
+        ],
+    )
+    fun getFriend(
+        @HeaderParam("User-id") userId: UUID,
+        @PathParam("friendId") friendId: UUID,
+    ): Response {
+        val friend = friendsService.getRelationShip(userId, friendId)
+        return Response.ok(friend).build()
+    }
+
     @POST
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
