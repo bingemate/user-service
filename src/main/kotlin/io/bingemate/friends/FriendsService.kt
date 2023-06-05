@@ -54,9 +54,8 @@ class FriendsService {
         return friend.toDto(userId)
     }
 
-    fun getRelationShip(userId: UUID, friendId: UUID): FriendDto {
-        val friend = friendsRepository.getRelationship(userId, friendId)
-            ?: throw BadRequestException("Friendship does not exist")
+    fun getRelationShip(userId: UUID, friendId: UUID): FriendDto? {
+        val friend = friendsRepository.getRelationship(userId, friendId) ?: return null
         return friend.toDto(userId)
     }
 

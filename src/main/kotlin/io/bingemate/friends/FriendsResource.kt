@@ -144,6 +144,7 @@ class FriendsResource {
         @PathParam("friendId") friendId: UUID,
     ): Response {
         val friend = friendsService.getRelationShip(userId, friendId)
+            ?: return Response.status(Response.Status.NOT_FOUND).build()
         return Response.ok(friend).build()
     }
 
