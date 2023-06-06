@@ -34,12 +34,14 @@ data class Friend (
         if (this.userRequester == userId) {
             return FriendDto(
                 state = this.state!!,
-                friendId = this.userRequested!!
+                friendId = this.userRequested!!,
+                requester = true
             )
         }
         return FriendDto(
             state = this.state!!,
-            friendId = this.userRequester!!
+            friendId = this.userRequester!!,
+            requester = false
         )
     }
 }

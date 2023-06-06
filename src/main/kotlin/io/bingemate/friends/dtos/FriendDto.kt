@@ -10,6 +10,9 @@ data class FriendDto (
     @JsonProperty("state")
     val state: FriendState,
 
+    @JsonProperty("requester")
+    val requester: Boolean,
+
     @JsonProperty("friendId")
     val friendId: UUID,
 )
